@@ -1,0 +1,73 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+using namespace std;
+
+int main() {
+    setlocale(LC_ALL,"");
+
+    int ch;
+    cout<<"1 - удалить последний рядок\n";
+    cout<<"2 - найти длину самого длинного\n";
+    cout<<"3 - посчитать слово\n";
+    cout<<"4 - заменить слово\n";
+    cout<<"Ваш выбор: ";
+    cin>>ch;
+
+    string inF="input.txt";
+    string outF="output.txt";
+
+    if (ch==1) {
+        ifstream f(inF);
+        vector<string> lines;
+        string s;
+        while(getline(f,s)){
+            lines.push_back(s);
+        }
+        f.close();
+        ofstream g(outF);
+        for(int i=0;i<(int)lines.size()-1;i++){ // минус последний
+            g<<lines[i]<<endl;
+        }
+        g.close();
+        cout<<"готово\n";
+    }
+    else if (ch==2) {
+        ifstream f(inF);
+        string s; int maxLen=0;
+        while(getline(f,s)){
+            int l = s.size(); 
+            if(l>maxLen) maxLen=l; 
+            // cout<<"DEBUG: "<<l<<endl;
+        }
+        cout<<"найдлиннейший = "<<maxLen<<endl;
+    }
+    else if (ch==3) {
+        string word; cout<<"слово: ";cin>>word;
+        ifstream f(inF);
+        string tmp; int cntt=0;
+        while(f>>tmp){
+            if(tmp==word) cntt++;
+        }
+        cout<<"раз = "<<cntt<<"\n";
+    }
+    else if (ch==4) {
+        string oldW,newW;
+        cout<<"что ищем: ";cin>>oldW;
+        cout<<"на что менять: ";cin>>newW;
+        ifstream f(inF);
+        ofstream g(outF);
+        string tmp;
+        while(f>>tmp){
+            if(tmp==oldW) g<<newW<<" ";
+            else g<<tmp<<" ";
+        }
+        cout<<"замена сделана\n";
+    }
+    else {
+        cout<<"что-то не то выбрано...\n";
+    }
+
+    return 0;
+}
